@@ -1,0 +1,12 @@
+aws_region         = "us-east-1"
+vpc_cidr           = "10.0.0.0/16"
+subnet_cidrs       = ["10.0.1.0/24", "10.0.2.0/24","10.0.3.0/24"]
+availability_zones = ["us-east-1a" , "us-east-1b" , "us-east-1c"]
+ami_value          = "ami-020cba7c55df1f615"
+instance_type      = "t2.micro"
+instance_count     = 1
+env                = "prod"
+key_name           = "prod-my-key"
+public_key_path    = "~/.ssh/prod-my-key.pub"
+private_key_path   = "~/.ssh/prod-my-key"
+prevent_key_destroy = true

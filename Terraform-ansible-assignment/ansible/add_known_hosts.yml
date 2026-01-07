@@ -1,0 +1,22 @@
+# ---
+# - name: Add known_hosts entries for all instances (skip for prod)
+#   hosts: all
+#   gather_facts: no
+
+#   tasks:
+#     - name: Add IP to known_hosts (only for non-prod)
+#       shell: ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts
+#       delegate_to: localhost
+#       run_once: false
+#       when: ansible_env != "prod"
+
+---
+- name: Add known_hosts entries for all instances (skip for prod)
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Add IP to known_hosts (only for non-prod)
+      shell: ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts
+      run_once: false
+      when: ansible_env != "prod"
