@@ -1,0 +1,70 @@
+# groups:
+#   - name: system-alerts
+#     rules:
+#       - alert: HighMemoryUsage
+#         expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 60
+#         for: 30s
+#         labels:
+#           severity: critical
+#         annotations:
+#           summary: "High memory usage on {{ $labels.instance }}"
+#           description: "Memory usage is above 80% (current value: {{ $value }}%)"
+        
+#       - alert: HighRequestRate
+#         expr: increase(http_server_requests_seconds_count{uri!~"/actuator.*"}[1m]) > 5
+#         for: 1m
+#         labels:
+#           severity: warning
+#         annotations:
+#           summary: "High request rate on {{ $labels.instance }}"
+#           description: "Request count exceeded 20 in the last 1 minute (current value: {{ $value }})"
+
+
+groups:
+  - name: system-alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 60
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is above 60%"
+          value: "{{ $value }}%"
+
+      - alert: HighRequestRate
+        expr: increase(http_server_requests_seconds_count{uri!~"/actuator.*"}[1m]) > 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request rate on {{ $labels.instance }}"
+          description: "Request count exceeded 5 in the last 1 minute"
+          value: "{{ $value }}"
+
+
+
+
+
+
+
+#      - alert: InstanceDown
+#        expr: up == 0
+#        for: 5m
+#        labels:
+#          severity: critical
+#        annotations:
+#          summary: "Instance {{ $labels.instance }} down"
+#          description: "The instance {{ $labels.instance }} has been down for more than
+
+# global:
+#   resolve_timeout: 5m
+
+# route:
+#   receiver: 'default-receiver'
+
+# receivers:
+#   - name: 'default-receiver'
+#     email_configs:
+#       - to: 'test@example.com'

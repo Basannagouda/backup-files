@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:7dX32YWSmp@my-todo-api-mongodb:27017/todo-app?authSource=admin
+
+server:
+  port: 9201
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: todo-app
+

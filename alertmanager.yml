@@ -1,0 +1,74 @@
+# # route:
+# #   group_by: ['alertname']
+# #   group_wait: 30s
+# #   group_interval: 5m
+# #   repeat_interval: 1h
+# #   receiver: 'web.hook'
+# # receivers:
+# #   - name: 'web.hook'
+# #     webhook_configs:
+# #       - url: 'http://127.0.0.1:5001/'
+# # inhibit_rules:
+# #   - source_match:
+# #       severity: 'critical'
+# #     target_match:
+# #       severity: 'warning'
+# #     equal: ['alertname', 'dev', 'instance']
+
+# global:
+#   resolve_timeout: 5m
+
+# route:
+#   receiver: webhook-receiver
+
+# receivers:
+#   - name: webhook-receiver
+#     webhook_configs:
+
+
+# global:
+#   resolve_timeout: 5m
+
+# route:
+#   receiver: 'slack-notifications'
+#   group_wait: 10s
+#   group_interval: 30s
+#   repeat_interval: 1h
+
+# receivers:
+#   - name: 'slack-notifications'
+#     slack_configs:
+#       - api_url: 'https://hooks.slack.com/services/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'
+#         channel: '#new-channel'
+#         send_resolved: true
+#         title: '{{ .CommonLabels.alertname }}'
+#         text: >-
+#           *Alert:* {{ .CommonLabels.alertname }}
+#           *Severity:* {{ .CommonLabels.severity }}
+#           *Instance:* {{ .CommonLabels.instance }}
+#           *Description:* {{ .CommonAnnotations.summary }}
+
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'slack-notifications'
+  group_wait: 10s
+  group_interval: 30s
+  repeat_interval: 1h
+
+receivers:
+  - name: 'slack-notifications'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#new-channel'
+        send_resolved: true
+        title: 'Prometheus Alerts ({{ .Status }})'
+        text: >-
+          {{ range .Alerts }}
+          *Alert:* {{ .Labels.alertname }}
+          *Severity:* {{ .Labels.severity }}
+          *Instance:* {{ .Labels.instance }}
+          *Description:* {{ .Annotations.description }}
+          {{ end }}
+

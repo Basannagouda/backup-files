@@ -1,0 +1,26 @@
+groups:
+  - name: node_recording_rules
+    interval: 30s  # optional; overrides global evaluation_interval
+    rules:
+      # CPU usage % per instance (all CPUs combined)
+      - record: instance:cpu_usage:percent
+        expr: |
+          100 * (1 - avg by (instance) (
+            rate(node_cpu_seconds_total{mode="idle"}[5m])
+          ))
+
+      # Memory usage % per instance
+      - record: instance:mem_usage:percent
+        expr: |
+          100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))
+
+      # Disk usage % per filesystem, excluding tmpfs/overlay
+      - record: instance:fs_usage:percent
+        expr: |
+          100 *
+          (
+            (node_filesystem_size_bytes{fstype!~"tmpfs|overlay"} -
+             node_filesystem_free_bytes{fstype!~"tmpfs|overlay"})
+            /
+            node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}
+          )
