@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  message: hello-again
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-11-05T07:35:55Z"
+  labels:
+    example.com/restart-deployment: demo
+  name: demo-config
+  namespace: default
+  resourceVersion: "210805"
+  uid: 37071699-fe8b-40f0-ac12-ab004c90a18b
